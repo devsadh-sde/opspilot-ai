@@ -4,12 +4,13 @@ from fastapi import FastAPI
 from app.api.inventory import router as inventory_router
 from app.api.suppliers import router as supplier_router
 from app.api.pricing import router as pricing_router
-
+from app.api.requests import router as request_router
 
 app = FastAPI(title="OpsPilot AI")
 
 # Register our API routers
 app.include_router(inventory_router)
+app.include_router(request_router)
 app.include_router(supplier_router)
 app.include_router(pricing_router)
 
