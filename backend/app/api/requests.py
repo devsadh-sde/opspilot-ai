@@ -2,23 +2,20 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
-from app.workflows.request_workflow import (
-    process_customer_request,
-)
+from app.workflows.order_graph import order_graph
 
 
 router = APIRouter()
 
 
 class AnalyzeRequest(BaseModel):
-    message: str = Field(
-        min_length=1,
-        max_length=2000
-    )
+    message: str = Field(min_length=1, max_length=2000)
 
 
 @router.post("/requests/analyze")
-def analyze_request(request: AnalyzeRequest):
-    return process_customer_request(
-        request.message
-    )
+def analyze_customer_request(request: AnalyzeRequest):
+    result = order_graph.invoke({
+        "customer_message": request.message
+    })
+
+    return result
